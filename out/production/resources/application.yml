@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: pefint
+  data:
+  datasource:
+    url: jdbc:mysql://127.0.0.0:3306/pefint
+    name: pefint
+    password: pefint123!@#
+    driver-class-name: com.mysql.cj.jdbc.Driver
