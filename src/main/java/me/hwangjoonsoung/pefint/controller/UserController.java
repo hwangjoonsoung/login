@@ -1,24 +1,29 @@
 package me.hwangjoonsoung.pefint.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.hwangjoonsoung.pefint.domain.User;
 import me.hwangjoonsoung.pefint.dto.UserForm;
 import me.hwangjoonsoung.pefint.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.View;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
+    private final View error;
 
-    @GetMapping("/user/alluser")
+    @GetMapping("/alluser")
     public String getAllUser(Model model){
         List<User> allUser = userService.getAllUser();
         System.out.println(allUser);
@@ -26,16 +31,20 @@ public class UserController {
         return "allusers";
     }
 
-    @GetMapping("/user/new")
+    @GetMapping("/new")
     public String gotoNewUser(){
-        return "newUser.html";
+        return "user_regist";
     }
 
-    @PostMapping("/user/new")
-    public String newUser(UserForm userForm){
-        System.out.println(userForm.toString());
+    @PostMapping("/new")
+    public String newUser(@Valid UserForm userForm, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            // 잘못된 입력에 대한 404 처리?
+            System.out.println(error.toString());
+            return "redirect:/";
+        }
         userService.join(userForm);
-        return "/";
+        return "redirect:/";
     }
 
 }

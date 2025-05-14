@@ -1,6 +1,7 @@
 package me.hwangjoonsoung.pefint.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,6 +22,7 @@ public class UserForm {
     @NotEmpty(message = "생년월일은 필수 입력값입니다.")
     private String birth;
     @NotEmpty(message = "성별은 필수 입력값입니다.")
+    @Size(max = 1)
     private String sex;
     @NotEmpty(message = "휴대폰 번호는 필수 입력값입니다.")
     private String phone_number;
