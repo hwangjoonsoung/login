@@ -2,6 +2,7 @@ package me.hwangjoonsoung.pefint.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import me.hwangjoonsoung.pefint.customException.InvalidUserFormException;
 import me.hwangjoonsoung.pefint.domain.User;
 import me.hwangjoonsoung.pefint.dto.UserForm;
 import me.hwangjoonsoung.pefint.service.UserService;
@@ -39,9 +40,7 @@ public class UserController {
     @PostMapping("/new")
     public String newUser(@Valid UserForm userForm, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            // 잘못된 입력에 대한 404 처리?
-            System.out.println(error.toString());
-            return "redirect:/";
+            throw new InvalidUserFormException("유효하지 않은 값입니다");
         }
         userService.join(userForm);
         return "redirect:/";
