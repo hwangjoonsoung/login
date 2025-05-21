@@ -28,11 +28,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/","/user/new","/user/login","/user/success","/user/alluser").permitAll().anyRequest().authenticated();
+                    auth.requestMatchers("/","/user/new","/user/login").permitAll().anyRequest().authenticated();
                 })
                 .formLogin(login -> {
                     login.loginPage("/user/login")
-                            .defaultSuccessUrl("/user/success").permitAll();
+                            .defaultSuccessUrl("/user/success",true).permitAll();
                 })
                 .logout(logout -> {
                     logout.logoutUrl("/user/logout")
