@@ -10,9 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.View;
 
 import java.util.List;
 
@@ -22,19 +22,18 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final View error;
 
     @GetMapping("/alluser")
     public String getAllUser(Model model){
         List<User> allUser = userService.getAllUser();
-        System.out.println(allUser);
+        System.out.println("allUser = " + allUser);
         model.addAttribute("users", allUser);
-        return "allusers";
+        return "/user/users";
     }
 
     @GetMapping("/new")
-    public String gotoNewUser(){
-        return "user_regist";
+    public String newUser(){
+        return "/user/new";
     }
 
     @PostMapping("/new")
@@ -43,7 +42,19 @@ public class UserController {
             throw new InvalidUserFormException("유효하지 않은 값입니다");
         }
         userService.join(userForm);
-        return "redirect:/";
+        return "redirect:/user/new";
+    }
+
+    @GetMapping("/i/{id}")
+    public String findUserById(@PathVariable Long id, Model model) {
+        User user = userService.findUserById(id);
+        model.addAttribute("user", user);
+        return "/user/info";
+    }
+
+    @GetMapping("/success")
+    public String loginSuccess(){
+        return "/user/LoginSuccess";
     }
 
 }

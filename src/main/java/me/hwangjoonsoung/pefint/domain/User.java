@@ -1,9 +1,7 @@
 package me.hwangjoonsoung.pefint.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +9,9 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @ToString
+@RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
 
     @Id
