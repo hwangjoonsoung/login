@@ -1,24 +1,27 @@
 package me.hwangjoonsoung.pefint.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
+@ToString
+@RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
 
     private String email;
     private String password;
     private String name;
+    @Column(length = 6)
     private String birth;
 
     @Column(length = 1)
@@ -29,5 +32,5 @@ public class User {
 
     @Column(length = 1)
     private String enabled;
-
+    private String Role ="USER";
 }
