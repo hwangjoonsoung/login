@@ -37,4 +37,9 @@ public class UserService {
         User user = userRepository.findUserById(id);
         return user;
     }
+
+    public void editUser(Long id,UserForm userForm) {
+        userRepository.editUser(id,userForm);
+
+    }
 }
