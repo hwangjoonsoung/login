@@ -16,7 +16,6 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
 
     private String email;
@@ -33,5 +32,5 @@ public class User {
 
     @Column(length = 1)
     private String enabled;
-
+    private String Role ="USER";
 }

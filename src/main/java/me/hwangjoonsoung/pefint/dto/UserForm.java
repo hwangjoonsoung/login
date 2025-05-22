@@ -29,5 +29,5 @@ public class UserForm {
     private LocalDateTime date_join = LocalDateTime.now();
     private LocalDateTime date_update = LocalDateTime.now();
     private String enabled = "0";
-
+    private String role = "USER";
 }

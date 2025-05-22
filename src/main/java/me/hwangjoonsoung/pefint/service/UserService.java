@@ -26,10 +26,10 @@ public class UserService {
     }
 
     public void join(UserForm userForm) {
-        // user userFrom mapping
         User user = User.builder().email(userForm.getEmail()).birth(userForm.getBirth()).name(userForm.getName())
                 .sex(userForm.getSex()).date_join(userForm.getDate_update()).date_update(null)
-                .phone_number(userForm.getPhone_number()).enabled(userForm.getEnabled()).password(encoder.encode(userForm.getPassword())).build();
+                .phone_number(userForm.getPhone_number()).enabled(userForm.getEnabled()).password(encoder.encode(userForm.getPassword()))
+                .Role(userForm.getRole()).build();
         userRepository.joinNewUser(user);
     }
 
