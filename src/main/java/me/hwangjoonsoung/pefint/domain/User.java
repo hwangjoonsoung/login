@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,6 +18,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     private String email;
@@ -33,4 +36,7 @@ public class User {
     @Column(length = 1)
     private String enabled;
     private String Role ="USER";
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL , orphanRemoval = true)
+    private List<Token> tokens = new ArrayList<>();
 }
