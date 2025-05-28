@@ -1,6 +1,7 @@
 package me.hwangjoonsoung.pefint.configuration.jwt;
 
 import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,20 @@ public class JwtProvider {
 
         JwtBuilder jwt = Jwts.builder().setSubject(email).setIssuedAt(now).setExpiration(expiryDate).signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)));
         return jwt.compact();
+    }
+
+    public String getEmailFromToken(String token) {
+        String email = Jwts.parserBuilder().setSigningKey(secret.getBytes(StandardCharsets.UTF_8)).build().parseClaimsJwt(token).getBody().getSubject();
+        return email;
+    }
+
+    public boolean vaildationToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(secret.getBytes(StandardCharsets.UTF_8)).build().parseClaimsJwt(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
     }
 
 }
