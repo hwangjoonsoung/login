@@ -11,7 +11,7 @@ public class LoginRepository {
 
     private final EntityManager em;
 
-    public Long userAccess(Token token){
+    public Long saveToken(Token token){
         em.persist(token);
         Long id = token.getId();
         return id;
