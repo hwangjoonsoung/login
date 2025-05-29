@@ -17,4 +17,11 @@ public class LoginService {
         Long id = loginRepository.userAccess(token);
         return id;
     }
+
+    public Token findToken(String token){
+        Token findToken = loginRepository.findToken(token);
+        return findToken;
+    }
+
+
 }

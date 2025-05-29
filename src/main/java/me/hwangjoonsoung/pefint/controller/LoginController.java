@@ -40,7 +40,6 @@ public class LoginController {
             User user = userService.findUserByEmail(request.getEmail());
             Token accessToken = Token.builder().user(user).koken(token).build();
             Long id = loginService.userAccess(accessToken);
-            System.out.println("success : "+id);
         }
         TokenResponse tokenResponse = new TokenResponse(token);
         return ResponseEntity.ok(tokenResponse);
@@ -56,9 +55,21 @@ public class LoginController {
         return "/user/LoginSuccess";
     }*/
 
-    @GetMapping("/check/success")
+    @GetMapping("/token/check")
     public void loginSuccess(HttpServletRequest request){
         String authorization = request.getHeader("Authorization");
         System.out.println(authorization);
+    }
+
+    @GetMapping("/token/valid")
+    public void tokenCheck(HttpServletRequest request){
+        String authorizationToken = request.getHeader("Authorization");
+        if(authorizationToken != null){
+            loginService.validToken();
+        }
+
+        //token이 유효한지 확인
+        //유효하다면 리프레쉬 토큰 발급 안하고 유요하지 않다면 발급
+        //
     }
 }

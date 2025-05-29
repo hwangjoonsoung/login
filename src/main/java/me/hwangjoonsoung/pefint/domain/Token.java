@@ -19,9 +19,18 @@ public class Token {
     @Column(name = "token_id")
     private Long id;
     private String koken;
-    private LocalDateTime data_create = LocalDateTime.now();
+    @Column(length = 1)
+    private char is_refresh_token;
+    private LocalDateTime date_expired ;
+    private LocalDateTime date_create ;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @PrePersist
+    private void settingDefault(){
+        this.date_create = LocalDateTime.now();
+        this.date_expired = LocalDateTime.now();
+    }
 }

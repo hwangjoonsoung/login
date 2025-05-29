@@ -12,10 +12,14 @@ public class LoginRepository {
     private final EntityManager em;
 
     public Long userAccess(Token token){
-        System.out.println(token);
         em.persist(token);
         Long id = token.getId();
         return id;
+    }
+
+    public Token findToken(String token) {
+        Token findToken = em.createQuery("select t from Token t where t.koken = :token",Token.class).setParameter("token", token).getSingleResult();
+        return findToken;
     }
 
 
