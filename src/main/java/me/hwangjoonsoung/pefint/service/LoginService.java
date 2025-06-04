@@ -30,15 +30,21 @@ public class LoginService {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
-        String reflashToken = jwtProvider.generateToken(request.getEmail());
-        if(reflashToken != null){
+        String accessToken = "";
+        String refreshToken = jwtProvider.generateToken(request.getEmail());
+        if(refreshToken != null){
             User user = userRepository.findUserByEmail(request.getEmail());
-            String accessToken = UUID.randomUUID().toString();
-            Token token = Token.builder().user(user).koken(accessToken).build();
+            accessToken = UUID.randomUUID().toString();
+            Token token = Token.builder().user(user).token(accessToken).build();
             loginRepository.saveToken(token);
         }
-        TokenResponse tokenResponse = new TokenResponse(reflashToken);
+        TokenResponse tokenResponse = TokenResponse.builder().refreshToken(refreshToken).accessToken(accessToken).build();
         return tokenResponse;
+    }
+
+    public void logoutUser(String token){
+        loginRepository.expiredToken(token);
+
     }
 
 

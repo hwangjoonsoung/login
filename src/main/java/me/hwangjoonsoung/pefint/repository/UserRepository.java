@@ -24,7 +24,7 @@ public class UserRepository {
     }
 
     public User findUserById(Long id) {
-        User user = em.createQuery("select u from User u where u.user_id =:id ", User.class).setParameter("id", id).getSingleResult();
+        User user = em.createQuery("select u from User u where u.id =:id ", User.class).setParameter("id", id).getSingleResult();
         return user;
     }
 
@@ -34,7 +34,7 @@ public class UserRepository {
     }
 
     public void editUser(Long id , UserForm userForm) {
-        User user = em.createQuery("select u from User u where u.ser_id = :id", User.class).setParameter("id", id).getSingleResult();
+        User user = em.createQuery("select u from User u where u.id = :id", User.class).setParameter("id", id).getSingleResult();
         user.setBirth(userForm.getBirth());
         user.setEmail(userForm.getEmail());
         user.setName(userForm.getName());

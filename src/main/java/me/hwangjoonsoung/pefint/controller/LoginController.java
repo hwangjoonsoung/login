@@ -9,6 +9,8 @@ import me.hwangjoonsoung.pefint.service.LoginService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Enumeration;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -37,28 +39,41 @@ public class LoginController {
         return "/user/LoginSuccess";
     }*/
 
+    // todo: authorization에 access token 과 refresh token이 같이 넘어 오는 문제 해결
+
     @GetMapping("/token/check")
-    public void loginSuccess(HttpServletRequest request){
-        String authorization = request.getHeader("Authorization");
+    public void loginSuccess(HttpServletRequest request) {
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            System.out.println(headerNames.nextElement());
+        }
+        String refreshToken = request.getHeader("authorization");
     }
 
     @GetMapping("/token/valid")
-    public void tokenCheck(HttpServletRequest request){
-        String authorizationToken = request.getHeader("Authorization");
-        if(authorizationToken != null){
-            String tokenRemoveBearer = authorizationToken.replace("Bearer ", "").trim();
+    public void tokenCheck(HttpServletRequest request) {
+        String refreshToken = request.getHeader("authorization");
+        if (refreshToken != null) {
+            String tokenRemoveBearer = refreshToken.replace("Bearer ", "").trim();
             boolean isTokenValid = jwtProvider.validateToken(tokenRemoveBearer);
         }
     }
 
     @GetMapping("/token/email")
-    public void getEmailFromToken(HttpServletRequest request){
-        String emailFromToken= "";
-        String authorizationToken = request.getHeader("Authorization");
-        if(authorizationToken !=null){
-            String tokenRemoveBearer = authorizationToken.replace("Bearer ", "");
+    public void getEmailFromToken(HttpServletRequest request) {
+        String emailFromToken = "";
+        String refreshToken = request.getHeader("authorization");
+        if (refreshToken != null) {
+            String tokenRemoveBearer = refreshToken.replace("Bearer ", "");
             emailFromToken = jwtProvider.getEmailFromToken(tokenRemoveBearer);
         }
+    }
 
+    @PostMapping("/token/logout")
+    public void logout(HttpServletRequest request) {
+        String accessToken = request.getHeader("authorization");
+        if(accessToken != null){
+            loginService.logoutUser(accessToken);
+        }
     }
 }

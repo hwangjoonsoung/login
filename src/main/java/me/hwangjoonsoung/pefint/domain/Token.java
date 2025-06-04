@@ -17,7 +17,7 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "token_id")
     private Long id;
-    private String koken;
+    private String token;
     private LocalDateTime date_expired ;
     private LocalDateTime date_create ;
 

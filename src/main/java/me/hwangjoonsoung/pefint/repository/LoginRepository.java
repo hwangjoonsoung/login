@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import me.hwangjoonsoung.pefint.domain.Token;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+
 @Repository
 @RequiredArgsConstructor
 public class LoginRepository {
@@ -18,10 +20,12 @@ public class LoginRepository {
     }
 
     public Token findToken(String token) {
-        Token findToken = em.createQuery("select t from Token t where t.koken = :token",Token.class).setParameter("token", token).getSingleResult();
+        Token findToken = em.createQuery("select t from Token t where t.token = :token",Token.class).setParameter("token", token).getSingleResult();
         return findToken;
     }
 
-
-
+    public void expiredToken(String accessToken) {
+        Token token = em.createQuery("select t from Token t where t.token = :token", Token.class).setParameter("token", accessToken).getSingleResult();
+        token.setDate_expired(LocalDateTime.now());
+    }
 }
