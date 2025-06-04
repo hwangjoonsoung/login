@@ -22,7 +22,15 @@ public class JwtProvider {
 
     private final long expirationSecond = 1000 * 60 * 30;
 
-    public String generateToken(String email) {
+    public String generateRefreshToken(String email) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + expirationSecond);
+
+        JwtBuilder jwt = Jwts.builder().setSubject(email).setIssuedAt(now).setExpiration(expiryDate).signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)));
+        return jwt.compact();
+    }
+
+    public String generateAccessToken(String email) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationSecond);
 

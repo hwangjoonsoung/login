@@ -31,7 +31,7 @@ public class LoginService {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
         String accessToken = "";
-        String refreshToken = jwtProvider.generateToken(request.getEmail());
+        String refreshToken = jwtProvider.generateRefreshToken(request.getEmail());
         if(refreshToken != null){
             User user = userRepository.findUserByEmail(request.getEmail());
             accessToken = UUID.randomUUID().toString();

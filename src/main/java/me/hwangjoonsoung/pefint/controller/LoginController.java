@@ -1,15 +1,15 @@
 package me.hwangjoonsoung.pefint.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import me.hwangjoonsoung.pefint.configuration.jwt.JwtProvider;
 import me.hwangjoonsoung.pefint.dto.LoginRequest;
 import me.hwangjoonsoung.pefint.dto.TokenResponse;
 import me.hwangjoonsoung.pefint.service.LoginService;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Enumeration;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,8 +25,15 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> userLogin(@RequestBody LoginRequest request) {
-        TokenResponse tokenResponse = loginService.loginUser(request);
+    public ResponseEntity<?> userLogin(@RequestBody LoginRequest loginRequest , HttpServletResponse httpServletResponse) {
+        TokenResponse tokenResponse = loginService.loginUser(loginRequest);
+
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", tokenResponse.getRefreshToken()).httpOnly(true).secure(true)
+                .path("/")
+                .sameSite("none")
+                .maxAge(60 * 60 * 24)
+                .build();
+        httpServletResponse.setHeader("Set-Cookie" ,cookie.toString());
         return ResponseEntity.ok(tokenResponse);
     }
 
@@ -39,15 +46,14 @@ public class LoginController {
         return "/user/LoginSuccess";
     }*/
 
-    // todo: authorization에 access token 과 refresh token이 같이 넘어 오는 문제 해결
-
     @GetMapping("/token/check")
-    public void loginSuccess(HttpServletRequest request) {
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            System.out.println(headerNames.nextElement());
+    public void loginSuccess(HttpServletRequest request , @CookieValue(value = "refreshToken" , required = false) String refreshToken) {
+        String accessToken = request.getHeader("authorization");
+        System.out.println("accessToken = " + accessToken);
+        if(refreshToken != null ){
+            boolean isTokenValidate = jwtProvider.validateToken(refreshToken);
+            System.out.println("isTokenValidate = " + isTokenValidate);
         }
-        String refreshToken = request.getHeader("authorization");
     }
 
     @GetMapping("/token/valid")
