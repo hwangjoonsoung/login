@@ -12,13 +12,16 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop  #프로젝트 처음 실행
-#      ddl-auto: update
+#      ddl-auto: create-drop  #프로젝트 처음 실행
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
         show_sql: true
+logging:
+  level:
+    org,springframework.security: debug
 
 jwt:
   secret: xAj34kL!92mv@Tqoe5N8y#Kj72DpAqLopCczmnnQQkQ=

@@ -12,7 +12,6 @@ public class IndexController {
     public String index(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth != null){
-            System.out.println(auth.getName() +": "+auth.isAuthenticated() );
         }
 
         return "index";

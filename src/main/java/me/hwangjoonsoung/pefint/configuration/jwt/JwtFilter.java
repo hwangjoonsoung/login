@@ -26,7 +26,15 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = resolveToken(request);
 
-        if (token != null && jwtProvider.vaildationToken(token)) {
+        String uri = request.getRequestURI();
+
+        // 인증 제외 경로
+        if (uri.startsWith("/auth") || uri.equals("/user/new")) {
+            filterChain.doFilter(request, response); // JWT 검증 없이 통과
+            return;
+        }
+
+        if (token != null && jwtProvider.validateToken(token)) {
             String email = jwtProvider.getEmailFromToken(token);
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

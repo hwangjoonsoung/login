@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Builder
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Token {
@@ -19,8 +18,6 @@ public class Token {
     @Column(name = "token_id")
     private Long id;
     private String koken;
-    @Column(length = 1)
-    private char is_refresh_token;
     private LocalDateTime date_expired ;
     private LocalDateTime date_create ;
 
@@ -32,5 +29,6 @@ public class Token {
     private void settingDefault(){
         this.date_create = LocalDateTime.now();
         this.date_expired = LocalDateTime.now();
+        date_expired.plusMonths(1);
     }
 }

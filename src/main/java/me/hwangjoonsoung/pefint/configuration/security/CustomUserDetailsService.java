@@ -19,7 +19,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 //    일반모드
 //    @Override
 //    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-//        System.out.println(userEmail);
 //        User user = userRepository.findUserByEmail(userEmail);
 //        return org.springframework.security.core.userdetails.User.withUsername(user.getName()).password(user.getPassword()).roles("USER").build();
 //    }
@@ -36,7 +35,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
         User user = userRepository.findUserByEmail(userEmail);
-        System.out.println("userdetailservice : "+ user);
         org.springframework.security.core.userdetails.User userDetail = new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), List.of());
         return userDetail;
     }

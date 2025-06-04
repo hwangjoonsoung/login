@@ -14,6 +14,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -28,13 +30,16 @@ public class LoginService {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
-        String token = jwtProvider.generateToken(request.getEmail());
-        if(token != null){
+        String reflashToken = jwtProvider.generateToken(request.getEmail());
+        if(reflashToken != null){
             User user = userRepository.findUserByEmail(request.getEmail());
-            Token accessToken = Token.builder().user(user).koken(token).build();
-            loginRepository.saveToken(accessToken);
+            String accessToken = UUID.randomUUID().toString();
+            Token token = Token.builder().user(user).koken(accessToken).build();
+            loginRepository.saveToken(token);
         }
-        TokenResponse tokenResponse = new TokenResponse(token);
+        TokenResponse tokenResponse = new TokenResponse(reflashToken);
         return tokenResponse;
     }
+
+
 }

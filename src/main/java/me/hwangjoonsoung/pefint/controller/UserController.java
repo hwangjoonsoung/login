@@ -28,7 +28,6 @@ public class UserController {
     @GetMapping("/alluser")
     public String getAllUser(Model model){
         List<User> allUser = userService.getAllUser();
-        System.out.println("allUser = " + allUser);
         model.addAttribute("users", allUser);
         return "/user/users";
     }
@@ -50,7 +49,6 @@ public class UserController {
     @GetMapping("/i/{id}")
     public String findUserById(@PathVariable Long id, Model model) {
         User user = userService.findUserById(id);
-        System.out.println(user);
         model.addAttribute("user", user);
         return "/user/info";
     }
