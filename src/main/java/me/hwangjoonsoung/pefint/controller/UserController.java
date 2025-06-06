@@ -1,17 +1,13 @@
 package me.hwangjoonsoung.pefint.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.hwangjoonsoung.pefint.customException.InvalidUserFormException;
 import me.hwangjoonsoung.pefint.domain.User;
 import me.hwangjoonsoung.pefint.dto.UserForm;
-import me.hwangjoonsoung.pefint.dto.UserInfo;
 import me.hwangjoonsoung.pefint.service.UserService;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,7 +28,6 @@ public class UserController {
     @GetMapping("/alluser")
     public String getAllUser(Model model){
         List<User> allUser = userService.getAllUser();
-        System.out.println("allUser = " + allUser);
         model.addAttribute("users", allUser);
         return "/user/users";
     }
@@ -51,43 +46,39 @@ public class UserController {
         return "redirect:/user/new";
     }
 
-    @GetMapping("/login")
-    public String userLogin(){
-        return "/user/login";
-    }
-
     @GetMapping("/i/{id}")
     public String findUserById(@PathVariable Long id, Model model) {
         User user = userService.findUserById(id);
-        System.out.println(user);
         model.addAttribute("user", user);
         return "/user/info";
     }
 
-    @GetMapping("/success")
-    public String loginSuccess(HttpServletRequest request){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth != null){
-            System.out.println(auth.getName() +": "+auth.isAuthenticated() );
-        }
-        return "/user/LoginSuccess";
-    }
-
     @GetMapping("/profile")
-    public String userProfile(@AuthenticationPrincipal UserInfo userInfo, Model model) {
+    public String userProfile(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null){
-            String name = authentication.getName();
-            System.out.println(name);
+            String userId = authentication.getName();
+            User user = userService.findUserById(Long.parseLong(userId));
+            model.addAttribute("user", user);
         }
+
         return "/user/profile";
     }
 
-    @GetMapping("/profile2")
-    public String userProfile2(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        String username = userDetails.getUsername();
-        System.out.println(username);
-        return "/user/profile";
+    @PostMapping("/profile")
+    public String userProfile(UserForm userForm) {
+        Long id = getAuthId();
+        userService.editUser(id,userForm);
+        return "redirect:/user/success";
+    }
+
+    private static Long getAuthId() {
+        long id = 0;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null){
+            id = Long.parseLong(authentication.getName());
+        }
+        return id;
     }
 
 }

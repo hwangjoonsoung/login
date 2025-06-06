@@ -22,6 +22,6 @@ public class Staff {
     private String name;
     private String authority;
     private LocalDateTime date_create;
-    private String emabled;
+    private String enabled;
 
 }

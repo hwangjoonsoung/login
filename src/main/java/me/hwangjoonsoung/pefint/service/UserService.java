@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import me.hwangjoonsoung.pefint.domain.User;
 import me.hwangjoonsoung.pefint.dto.UserForm;
 import me.hwangjoonsoung.pefint.repository.UserRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
-    private final ModelMapper modelMapper;
 
     public List<User> getAllUser() {
         List<User> allUser = userRepository.findAll();
@@ -36,5 +34,15 @@ public class UserService {
     public User findUserById(Long id) {
         User user = userRepository.findUserById(id);
         return user;
+    }
+
+    public User findUserByEmail(String email) {
+        User user = userRepository.findUserByEmail(email);
+        return user;
+    }
+
+    public void editUser(Long id,UserForm userForm) {
+        userRepository.editUser(id,userForm);
+
     }
 }
