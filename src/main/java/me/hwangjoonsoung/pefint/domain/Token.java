@@ -28,7 +28,6 @@ public class Token {
     @PrePersist
     private void settingDefault(){
         this.date_create = LocalDateTime.now();
-        this.date_expired = LocalDateTime.now();
-        date_expired.plusMonths(1);
+        this.date_expired = LocalDateTime.now().plusMonths(1);
     }
 }

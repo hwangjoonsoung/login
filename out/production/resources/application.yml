@@ -6,7 +6,7 @@ spring:
     name: pefint
   data:
   datasource:
-    url: jdbc:mysql://localhost:3306/pefint?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/pefint?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
     username: pefint
     password: pefint123!@#
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -44,7 +44,6 @@ public class LoginService {
 
     public void logoutUser(String token){
         loginRepository.expiredToken(token);
-
     }
 
 

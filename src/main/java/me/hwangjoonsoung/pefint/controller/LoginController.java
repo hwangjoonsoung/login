@@ -49,37 +49,34 @@ public class LoginController {
     @GetMapping("/token/check")
     public void loginSuccess(HttpServletRequest request , @CookieValue(value = "refreshToken" , required = false) String refreshToken) {
         String accessToken = request.getHeader("authorization");
-        System.out.println("accessToken = " + accessToken);
         if(refreshToken != null ){
             boolean isTokenValidate = jwtProvider.validateToken(refreshToken);
-            System.out.println("isTokenValidate = " + isTokenValidate);
-        }
-    }
-
-    @GetMapping("/token/valid")
-    public void tokenCheck(HttpServletRequest request) {
-        String refreshToken = request.getHeader("authorization");
-        if (refreshToken != null) {
-            String tokenRemoveBearer = refreshToken.replace("Bearer ", "").trim();
-            boolean isTokenValid = jwtProvider.validateToken(tokenRemoveBearer);
         }
     }
 
     @GetMapping("/token/email")
-    public void getEmailFromToken(HttpServletRequest request) {
+    public void getEmailFromToken(HttpServletRequest request , @CookieValue(value = "refreshToken") String refreshToken) {
         String emailFromToken = "";
-        String refreshToken = request.getHeader("authorization");
         if (refreshToken != null) {
-            String tokenRemoveBearer = refreshToken.replace("Bearer ", "");
-            emailFromToken = jwtProvider.getEmailFromToken(tokenRemoveBearer);
+            emailFromToken = jwtProvider.getEmailFromToken(refreshToken);
         }
     }
 
     @PostMapping("/token/logout")
-    public void logout(HttpServletRequest request) {
+    public ResponseEntity<?> logout(HttpServletRequest request ,@CookieValue(value = "refreshToken") String refreshToken ) {
         String accessToken = request.getHeader("authorization");
         if(accessToken != null){
+            accessToken = accessToken.substring(7);
             loginService.logoutUser(accessToken);
         }
+        ResponseCookie expiredCookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("none")
+                .maxAge(0)
+                .build();
+
+        return ResponseEntity.ok().header("Set-Cookie" , expiredCookie.toString()).body("logout success");
     }
 }
