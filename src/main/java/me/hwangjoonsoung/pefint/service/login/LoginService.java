@@ -1,7 +1,9 @@
 package me.hwangjoonsoung.pefint.service.login;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import me.hwangjoonsoung.pefint.customException.RedisSaveException;
 import me.hwangjoonsoung.pefint.service.RedisService;
 import me.hwangjoonsoung.pefint.util.jwt.JwtProvider;
 import me.hwangjoonsoung.pefint.domain.Token;
@@ -40,8 +42,11 @@ public class LoginService {
             Token token = Token.builder().user(user).token(accessToken).build();
             loginRepository.saveToken(token);
 
-
-            redisService.save(redisService.createRedisKey(user.getId()), );
+            try {
+                redisService.save(redisService.createRedisKey(user.getId()), redisService.createRedisValue(user,refreshToken));
+            } catch (JsonProcessingException e) {
+                throw new RedisSaveException("redis save fail");
+            }
         }
         TokenResponse tokenResponse = TokenResponse.builder().refreshToken(refreshToken).accessToken(accessToken).build();
         return tokenResponse;

@@ -24,7 +24,9 @@ public class RedisService {
         redisTemplate.opsForValue().set(key, value);
     }
 
-    public void saveUserInfoInRedis(String[] key , String[] value)
+    public void saveUserInfoInRedis(String[] key , String[] value) {
+
+    }
 
     public String get(String key) {
         return redisTemplate.opsForValue().get(key);
@@ -38,9 +40,11 @@ public class RedisService {
         return "user:" + id;
     }
 
-    public String createRedisKey(User user) throws JsonProcessingException {
+    public String createRedisValue(User user , String reflashToken) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        String userJson = objectMapper.writeValueAsString(UserJsonUsingRedis.userJsonUsingRedis(user));
+        System.out.println("UserJsonUsingRedis.userJsonUsingRedis(user) = " + UserJsonUsingRedis.userJsonUsingRedis(user ,reflashToken));
+        String userJson = objectMapper.writeValueAsString(UserJsonUsingRedis.userJsonUsingRedis(user,reflashToken));
+        System.out.println("userJson = " + userJson);
         return userJson;
     }
 }
