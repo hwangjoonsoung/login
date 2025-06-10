@@ -1,14 +1,15 @@
-package me.hwangjoonsoung.pefint.service;
+package me.hwangjoonsoung.pefint.service.login;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import me.hwangjoonsoung.pefint.configuration.jwt.JwtProvider;
+import me.hwangjoonsoung.pefint.service.RedisService;
+import me.hwangjoonsoung.pefint.util.jwt.JwtProvider;
 import me.hwangjoonsoung.pefint.domain.Token;
 import me.hwangjoonsoung.pefint.domain.User;
 import me.hwangjoonsoung.pefint.dto.LoginRequest;
 import me.hwangjoonsoung.pefint.dto.TokenResponse;
-import me.hwangjoonsoung.pefint.repository.LoginRepository;
-import me.hwangjoonsoung.pefint.repository.UserRepository;
+import me.hwangjoonsoung.pefint.repository.login.LoginRepository;
+import me.hwangjoonsoung.pefint.repository.user.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,7 @@ public class LoginService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final RedisService redisService;
 
     public TokenResponse loginUser(LoginRequest request) {
         Authentication authenticate = authenticationManager.authenticate(
@@ -37,6 +39,9 @@ public class LoginService {
             accessToken = UUID.randomUUID().toString();
             Token token = Token.builder().user(user).token(accessToken).build();
             loginRepository.saveToken(token);
+
+
+            redisService.save(redisService.createRedisKey(user.getId()), );
         }
         TokenResponse tokenResponse = TokenResponse.builder().refreshToken(refreshToken).accessToken(accessToken).build();
         return tokenResponse;

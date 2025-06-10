@@ -1,11 +1,12 @@
-package me.hwangjoonsoung.pefint.configuration.jwt;
+package me.hwangjoonsoung.pefint.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import me.hwangjoonsoung.pefint.configuration.security.CustomUserDetailsService;
+import me.hwangjoonsoung.pefint.util.jwt.JwtProvider;
+import me.hwangjoonsoung.pefint.service.user.CustomUserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,12 +1,12 @@
-package me.hwangjoonsoung.pefint.controller;
+package me.hwangjoonsoung.pefint.controller.login;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import me.hwangjoonsoung.pefint.configuration.jwt.JwtProvider;
+import me.hwangjoonsoung.pefint.util.jwt.JwtProvider;
 import me.hwangjoonsoung.pefint.dto.LoginRequest;
 import me.hwangjoonsoung.pefint.dto.TokenResponse;
-import me.hwangjoonsoung.pefint.service.LoginService;
+import me.hwangjoonsoung.pefint.service.login.LoginService;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

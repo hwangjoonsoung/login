@@ -1,8 +1,8 @@
-package me.hwangjoonsoung.pefint.configuration.security;
+package me.hwangjoonsoung.pefint.service.user;
 
 import lombok.RequiredArgsConstructor;
 import me.hwangjoonsoung.pefint.domain.User;
-import me.hwangjoonsoung.pefint.repository.UserRepository;
+import me.hwangjoonsoung.pefint.repository.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

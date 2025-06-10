@@ -1,4 +1,4 @@
-package me.hwangjoonsoung.pefint.configuration.jwt;
+package me.hwangjoonsoung.pefint.util.jwt;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtBuilder;

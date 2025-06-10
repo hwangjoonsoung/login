@@ -1,7 +1,7 @@
 package me.hwangjoonsoung.pefint.configuration.security;
 
 import lombok.RequiredArgsConstructor;
-import me.hwangjoonsoung.pefint.configuration.jwt.JwtFilter;
+import me.hwangjoonsoung.pefint.filter.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
