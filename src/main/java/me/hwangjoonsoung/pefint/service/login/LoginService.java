@@ -34,10 +34,15 @@ public class LoginService {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
+        boolean isAuthenticated = authenticate.isAuthenticated();
         String accessToken = "";
-        String refreshToken = jwtProvider.generateRefreshToken(request.getEmail());
+        String refreshToken = "";
+        User user = null;
+        if(isAuthenticated){
+            user = userRepository.findUserByEmail(request.getEmail());
+            refreshToken = jwtProvider.generateRefreshTokenById(user.getId());
+        }
         if(refreshToken != null){
-            User user = userRepository.findUserByEmail(request.getEmail());
             accessToken = UUID.randomUUID().toString();
             Token token = Token.builder().user(user).token(accessToken).build();
             loginRepository.saveToken(token);
@@ -53,7 +58,7 @@ public class LoginService {
     }
 
     public void logoutUser(String token){
-        loginRepository.expiredToken(token);
+        loginRepository.expiredAccessToken(token);
     }
 
 
