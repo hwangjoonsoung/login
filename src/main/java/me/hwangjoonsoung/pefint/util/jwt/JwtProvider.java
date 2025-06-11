@@ -10,7 +10,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import me.hwangjoonsoung.pefint.service.RedisService;
 import me.hwangjoonsoung.pefint.util.common.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import java.util.Date;
 
 @Component
 @Getter
-@RequiredArgsConstructor
 public class JwtProvider {
 
     @Value("${jwt.secret}")
