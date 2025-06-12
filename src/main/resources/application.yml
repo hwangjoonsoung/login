@@ -4,7 +4,6 @@ spring:
       enabled: false
   application:
     name: pefint
-  data:
   datasource:
     url: jdbc:mysql://localhost:3306/pefint?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
     username: pefint
@@ -19,6 +18,10 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
         show_sql: true
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
 logging:
   level:
     org,springframework.security: debug

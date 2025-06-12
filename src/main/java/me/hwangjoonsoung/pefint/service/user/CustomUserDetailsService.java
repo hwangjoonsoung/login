@@ -1,8 +1,8 @@
-package me.hwangjoonsoung.pefint.configuration.security;
+package me.hwangjoonsoung.pefint.service.user;
 
 import lombok.RequiredArgsConstructor;
 import me.hwangjoonsoung.pefint.domain.User;
-import me.hwangjoonsoung.pefint.repository.UserRepository;
+import me.hwangjoonsoung.pefint.repository.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,6 +35,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
         User user = userRepository.findUserByEmail(userEmail);
+        org.springframework.security.core.userdetails.User userDetail = new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), List.of());
+        return userDetail;
+    }
+
+    public UserDetails loadUserByUsername(Long userId) throws UsernameNotFoundException {
+        User user = userRepository.findUserById(userId);
         org.springframework.security.core.userdetails.User userDetail = new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), List.of());
         return userDetail;
     }

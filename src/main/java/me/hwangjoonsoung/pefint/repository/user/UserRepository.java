@@ -1,4 +1,4 @@
-package me.hwangjoonsoung.pefint.repository;
+package me.hwangjoonsoung.pefint.repository.user;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

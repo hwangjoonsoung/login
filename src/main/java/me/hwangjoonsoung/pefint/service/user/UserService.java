@@ -1,10 +1,10 @@
-package me.hwangjoonsoung.pefint.service;
+package me.hwangjoonsoung.pefint.service.user;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import me.hwangjoonsoung.pefint.domain.User;
 import me.hwangjoonsoung.pefint.dto.UserForm;
-import me.hwangjoonsoung.pefint.repository.UserRepository;
+import me.hwangjoonsoung.pefint.repository.user.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

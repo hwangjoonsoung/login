@@ -1,12 +1,13 @@
-package me.hwangjoonsoung.pefint.controller;
+package me.hwangjoonsoung.pefint.controller.login;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import me.hwangjoonsoung.pefint.configuration.jwt.JwtProvider;
+import me.hwangjoonsoung.pefint.util.jwt.JwtProvider;
 import me.hwangjoonsoung.pefint.dto.LoginRequest;
 import me.hwangjoonsoung.pefint.dto.TokenResponse;
-import me.hwangjoonsoung.pefint.service.LoginService;
+import me.hwangjoonsoung.pefint.service.login.LoginService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,18 +48,22 @@ public class LoginController {
     }*/
 
     @GetMapping("/token/check")
-    public void loginSuccess(HttpServletRequest request , @CookieValue(value = "refreshToken" , required = false) String refreshToken) {
-        String accessToken = request.getHeader("authorization");
+    public ResponseEntity<?> loginSuccess(HttpServletRequest request , @CookieValue(value = "refreshToken" , required = false) String refreshToken) {
         if(refreshToken != null ){
             boolean isTokenValidate = jwtProvider.validateToken(refreshToken);
+            if(isTokenValidate){
+                String subject = jwtProvider.getSubjectFromToken(refreshToken);
+            }
+            return ResponseEntity.ok(isTokenValidate);
         }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fail");
     }
 
     @GetMapping("/token/email")
     public void getEmailFromToken(HttpServletRequest request , @CookieValue(value = "refreshToken") String refreshToken) {
         String emailFromToken = "";
         if (refreshToken != null) {
-            emailFromToken = jwtProvider.getEmailFromToken(refreshToken);
+            emailFromToken = jwtProvider.getSubjectFromToken(refreshToken);
         }
     }
 

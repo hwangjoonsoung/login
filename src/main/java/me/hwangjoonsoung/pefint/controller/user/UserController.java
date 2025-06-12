@@ -1,11 +1,11 @@
-package me.hwangjoonsoung.pefint.controller;
+package me.hwangjoonsoung.pefint.controller.user;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.hwangjoonsoung.pefint.customException.InvalidUserFormException;
 import me.hwangjoonsoung.pefint.domain.User;
 import me.hwangjoonsoung.pefint.dto.UserForm;
-import me.hwangjoonsoung.pefint.service.UserService;
+import me.hwangjoonsoung.pefint.service.user.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;

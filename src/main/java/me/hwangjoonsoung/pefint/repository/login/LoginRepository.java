@@ -1,4 +1,4 @@
-package me.hwangjoonsoung.pefint.repository;
+package me.hwangjoonsoung.pefint.repository.login;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class LoginRepository {
         return findToken;
     }
 
-    public void expiredToken(String accessToken) {
+    public void expiredAccessToken(String accessToken) {
         Token token = em.createQuery("select t from Token t where t.token = :token", Token.class).setParameter("token", accessToken).getSingleResult();
         token.setDate_expired(LocalDateTime.now());
     }
